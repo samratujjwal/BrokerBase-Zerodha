@@ -16,7 +16,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: ['https://brokerbase-97bb5.web.app', 'http://localhost:3000', 'http://localhost:3001'],
     credentials: true
 }));
 app.use(bodyParser.json());

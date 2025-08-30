@@ -16,44 +16,78 @@ const Hero = forwardRef((props, ref) => {
 
     useEffect(() => {
         const verifyCookie = async () => {
+            console.log("All cookies:", cookies);
+            console.log("Token cookie:", cookies.token);
+            console.log("Document cookies:", document.cookie);
             if (!cookies.token) {
                 setIsLogin(false);
                 setIsLoading(false);
-                navigate("/signup");
                 return;
             }
+
             try {
                 const { data } = await axios.post(
-                    "http://localhost:3002/verify",
+                    "https://brokerbase.onrender.com/verify",
                     {},
                     { withCredentials: true }
                 );
                 const { status, user } = data;
                 setIsLogin(status);
                 setUsername(user);
-                setUsername(user);
                 if (status) {
-                    toast(`Hello ${user}`, {
+                    toast(`Hello ${user} BrokerBase Welcome u`, {
                         position: "top-right",
                     });
                 } else {
                     removeCookie("token");
-                    navigate("/signup");
+                    //navigate("/signup");
                 }
             } catch (err) {
                 console.error(err);
                 removeCookie("token");
-                navigate("/signup");
+                //navigate("/signup");
+                setIsLogin(false);
+                setUsername("");
             } finally {
                 setIsLoading(false);
             }
         };
-        verifyCookie();
-    }, [cookies, navigate, removeCookie]);
+        // verifyCookie();
+        setTimeout(async () => {
+            console.log("Rechecking authentication after login...");
+            await verifyCookie();
+        }, 100);
+    }, [cookies.token]);
+
+    const handleLoginSuccess = async () => {
+        console.log("Login success callback triggered");
+
+        try {
+            const { data } = await axios.post(
+                "https://brokerbase.onrender.com/verify",
+                {},
+                { withCredentials: true }
+            );
+            const { status, user } = data;
+            setIsLogin(status);
+            setUsername(user);
+            if (status) {
+                toast(`Hello ${user} BrokerBase Welcome u`, {
+                    position: "top-right",
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            setIsLogin(false);
+            removeCookie("token");
+        }
+    };
+
     const Logout = () => {
         removeCookie("token");
         setIsLogin(false);
-        navigate("/signup");
+        setUsername("")
+        //navigate("/signup");
     };
     const options = [
         {
@@ -85,6 +119,8 @@ const Hero = forwardRef((props, ref) => {
             alert('You must be logged in to access this page.');
         }
     };
+    console.log("Loading:", isLoading, "LoggedIn:", isLoggedIn, "User:", username);
+
     if (isLoading) {
         return <div className="text-center mt-5">Loading...</div>;
     }
@@ -121,9 +157,9 @@ const Hero = forwardRef((props, ref) => {
                                 </div>
 
                                 {activeForm === 'signup' ? (
-                                    <Signup />
+                                    <Signup onLoginSuccess={() => handleLoginSuccess()} />
                                 ) : (
-                                    <Login />
+                                    <Login onLoginSuccess={() => handleLoginSuccess()} />
                                 )}
 
                                 <p style={{ fontSize: "10px" }}>

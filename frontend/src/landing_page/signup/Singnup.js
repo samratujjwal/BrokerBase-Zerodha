@@ -2,7 +2,7 @@ import React, { useState, forwardRef, } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-function Signup() {
+function Signup({ onLoginSuccess }) {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState({
         email: "",
@@ -32,7 +32,7 @@ function Signup() {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                "http://localhost:3002/signup",
+                "https://brokerbase.onrender.com/signup",
                 {
                     ...inputValue,
                 },
@@ -41,15 +41,16 @@ function Signup() {
             const { success, message } = data;
             if (success) {
                 handleSuccess(message);
+                onLoginSuccess();
                 setTimeout(() => {
-                    navigate("/");
+                    navigate("/signup");
                 }, 1000);
             } else {
                 handleError(message);
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
-                handleError(error.response.data.message); // 👈 show the error message
+                handleError(error.response.data.message);
             } else {
                 handleError("An unexpected error occurred. Please try again.");
             }

@@ -11,9 +11,13 @@ module.exports.Signup = async (req, res, next) => {
         }
         const user = await User.create({ email, password, username, createdAt });
         const token = createSecretToken(user._id);
+        console.log("Generated token for signup:", token);
         res.cookie("token", token, {
-            withCredentials: true,
             httpOnly: false,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            path: "/"
         });
         res
             .status(201)
@@ -39,9 +43,15 @@ module.exports.Login = async (req, res, next) => {
             return res.json({ message: 'Incorrect password or email' })
         }
         const token = createSecretToken(user._id);
+        console.log("Generated token for login:", token); // Debug log
+        console.log("User found:", user.username);
         res.cookie("token", token, {
             withCredentials: true,
             httpOnly: false,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+            path: "/"
         });
         res.status(201).json({ message: "User logged in successfully", success: true });
         next()

@@ -9,7 +9,7 @@ const WatchList = () => {
     let [allWatchlist, setAllWatchlist] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:3002/allWatchlist").then((res) => {
+        axios.get("https://brokerbase.onrender.com/allWatchlist").then((res) => {
             setAllWatchlist(res.data);
         });
     }, []);

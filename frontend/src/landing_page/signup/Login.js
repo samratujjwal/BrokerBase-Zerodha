@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-function Login() {
+function Login({ onLoginSuccess }) {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState({
         email: "",
@@ -30,7 +30,7 @@ function Login() {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                "http://localhost:3002/login",
+                "https://brokerbase.onrender.com/login",
                 {
                     ...inputValue,
                 },
@@ -40,20 +40,24 @@ function Login() {
             const { success, message } = data;
             if (success) {
                 handleSuccess(message);
-                setTimeout(() => {
-                    navigate("/");
-                }, 1000);
+                //onLoginSuccess();
+                // setTimeout(() => {
+                //     navigate("/signup");
+                // }, 1000);
+                setInputValue({
+                    email: "",
+                    password: "",
+                });
+                console.log("About to call onLoginSuccess");
+                console.log("Document cookies after login:", document.cookie);
+                onLoginSuccess();
             } else {
                 handleError(message);
             }
         } catch (error) {
             console.log(error);
         }
-        setInputValue({
-            ...inputValue,
-            email: "",
-            password: "",
-        });
+
     };
     return (
         <>
