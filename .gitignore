@@ -8,6 +8,6 @@ build/
 # Logs
 logs
 *.log
-
+README.md
 # Misc
 *.local
