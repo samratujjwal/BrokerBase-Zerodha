@@ -23,7 +23,7 @@ function Login({ onLoginSuccess }) {
         });
     const handleSuccess = (msg) =>
         toast.success(msg, {
-            position: "bottom-left",
+            position: "top-right",
         });
 
     const handleSubmit = async (e) => {
@@ -31,6 +31,7 @@ function Login({ onLoginSuccess }) {
         try {
             const { data } = await axios.post(
                 "https://brokerbase.onrender.com/login",
+                //"http://localhost:3002/login",
                 {
                     ...inputValue,
                 },
@@ -40,10 +41,10 @@ function Login({ onLoginSuccess }) {
             const { success, message } = data;
             if (success) {
                 handleSuccess(message);
-                //onLoginSuccess();
-                // setTimeout(() => {
-                //     navigate("/signup");
-                // }, 1000);
+                onLoginSuccess();
+                setTimeout(() => {
+                    navigate("/signup");
+                }, 1000);
                 setInputValue({
                     email: "",
                     password: "",
@@ -51,6 +52,7 @@ function Login({ onLoginSuccess }) {
                 console.log("About to call onLoginSuccess");
                 console.log("Document cookies after login:", document.cookie);
                 onLoginSuccess();
+                console.log(" called onLoginSuccess");
             } else {
                 handleError(message);
             }

@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const PORT = process.env.PORT || 3002;
 const url = process.env.MONGO_URL;
 
@@ -13,10 +12,11 @@ const { PositionsModel } = require("./model/PositionsModel");
 const { WatchlistModel } = require("./model/WatchlistModel");
 
 const app = express();
-
+app.set('trust proxy', 1);
 //app.use(cors());
 app.use(cors({
-    origin: ['https://brokerbase-97bb5.web.app', 'http://localhost:3000', 'http://localhost:3001'],
+    origin: ['https://brokerbase-97bb5.web.app', 'http://localhost:3000', 'http://localhost:3001', "*"],
+    methods: ['GET', 'POST', 'OPTIONS'],
     credentials: true
 }));
 app.use(bodyParser.json());

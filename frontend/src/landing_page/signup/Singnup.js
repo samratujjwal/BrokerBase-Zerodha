@@ -33,6 +33,7 @@ function Signup({ onLoginSuccess }) {
         try {
             const { data } = await axios.post(
                 "https://brokerbase.onrender.com/signup",
+                //"http://localhost:3002/signup",
                 {
                     ...inputValue,
                 },

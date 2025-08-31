@@ -28,9 +28,11 @@ const Hero = forwardRef((props, ref) => {
             try {
                 const { data } = await axios.post(
                     "https://brokerbase.onrender.com/verify",
+                    //"http://localhost:3002/verify",
                     {},
                     { withCredentials: true }
                 );
+                console.log("Verify data:", data)
                 const { status, user } = data;
                 setIsLogin(status);
                 setUsername(user);
@@ -52,7 +54,7 @@ const Hero = forwardRef((props, ref) => {
                 setIsLoading(false);
             }
         };
-        // verifyCookie();
+        //verifyCookie();
         setTimeout(async () => {
             console.log("Rechecking authentication after login...");
             await verifyCookie();
@@ -60,15 +62,18 @@ const Hero = forwardRef((props, ref) => {
     }, [cookies.token]);
 
     const handleLoginSuccess = async () => {
-        console.log("Login success callback triggered");
+        console.log("handleLoginSuccess function triggered !");
 
         try {
             const { data } = await axios.post(
                 "https://brokerbase.onrender.com/verify",
+                //"http://localhost:3002/verify",
                 {},
                 { withCredentials: true }
             );
+            console.log("Backend data:", data);
             const { status, user } = data;
+            console.log("inside try block Status:", status)
             setIsLogin(status);
             setUsername(user);
             if (status) {
