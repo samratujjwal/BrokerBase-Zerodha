@@ -13,9 +13,9 @@ module.exports.Signup = async (req, res, next) => {
         const token = createSecretToken(user._id);
         console.log("Generated token for signup:", token);
         res.cookie("token", token, {
-            httpOnly: false,
-            secure: false,
-            sameSite: "lax",
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000, // 24 hours
             path: "/"
         });
