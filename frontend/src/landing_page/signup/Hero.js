@@ -27,7 +27,7 @@ const Hero = forwardRef((props, ref) => {
 
             try {
                 const { data } = await axios.post(
-                    "https://brokerbase.onrender.com/verify",
+                    "https://brokerbase-zerodha-backend.onrender.com/verify",
                     //"http://localhost:3002/verify",
                     {},
                     { withCredentials: true }
@@ -66,7 +66,7 @@ const Hero = forwardRef((props, ref) => {
 
         try {
             const { data } = await axios.post(
-                "https://brokerbase.onrender.com/verify",
+                "https://brokerbase-zerodha-backend.onrender.com/verify",
                 //"http://localhost:3002/verify",
                 {},
                 { withCredentials: true }
