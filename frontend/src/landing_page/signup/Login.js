@@ -30,7 +30,7 @@ function Login({ onLoginSuccess }) {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                "https://brokerbase.onrender.com/login",
+                "https://brokerbase-zerodha-backend.onrender.com/login",
                 //"http://localhost:3002/login",
                 {
                     ...inputValue,
